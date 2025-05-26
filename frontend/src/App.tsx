@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { authService } from './services/authService';
 import Login from './components/auth/Login';
-import WeatherPage from './pages/WeatherPage';
+import Register from './components/auth/Register';
+import Weather from './components/weather/Weather';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,11 +15,12 @@ const queryClient = new QueryClient({
   },
 });
 
-const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  if (!authService.isAuthenticated()) {
-    return <Navigate to="/login" />;
-  }
-  return <>{children}</>;
+interface PrivateRouteProps {
+  children: React.ReactNode;
+}
+
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
+  return authService.isAuthenticated() ? <>{children}</> : <Navigate to="/login" />;
 };
 
 const App: React.FC = () => {
@@ -27,11 +29,12 @@ const App: React.FC = () => {
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route
             path="/weather"
             element={
               <PrivateRoute>
-                <WeatherPage />
+                <Weather />
               </PrivateRoute>
             }
           />

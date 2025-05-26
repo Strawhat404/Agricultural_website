@@ -13,6 +13,15 @@ export interface LoginCredentials {
     password: string;
 }
 
+export interface RegisterData {
+    username: string;
+    email: string;
+    password: string;
+    password2: string;
+    first_name: string;
+    last_name: string;
+}
+
 export const authService = {
     login: async (credentials: LoginCredentials) => {
         const response = await authApi.post('/login/', credentials);
@@ -27,5 +36,10 @@ export const authService = {
 
     isAuthenticated: () => {
         return !!localStorage.getItem('token');
+    },
+
+    register: async (data: RegisterData) => {
+        const response = await axios.post(`${API_BASE_URL}/auth/register/`, data);
+        return response.data;
     },
 }; 
