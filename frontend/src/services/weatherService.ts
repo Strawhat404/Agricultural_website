@@ -5,6 +5,7 @@ const weatherApi = axios.create({
     baseURL: `${API_BASE_URL}/weather`,
     headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
     },
 });
 
@@ -42,16 +43,18 @@ export interface WeatherForecast {
 }
 
 export interface WeatherAlert {
-    id: number;
+    id: string;
     location: string;
     alert_type: string;
-    severity: 'low' | 'moderate' | 'high' | 'extreme';
-    severity_display: string;
+    severity: string;
     description: string;
     start_time: string;
     end_time: string;
     is_active: boolean;
     created_at: string;
+    title: string;
+    valid_until: string;
+    source: string;
 }
 
 export const weatherService = {
